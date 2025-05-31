@@ -1,46 +1,46 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-  <meta charset="UTF-8">
-  <title>抱抱日历 3.0</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <title>未来20年日历 🛏️</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body {
       font-family: "Microsoft YaHei", sans-serif;
-      background: #fff;
-      color: #000;
+      background-color: #fff;
+      color: #333;
       margin: 20px;
     }
     h1 {
       text-align: center;
-      margin-bottom: 30px;
       font-size: 28px;
+      margin-bottom: 20px;
     }
     .year-block {
       margin-bottom: 50px;
     }
     .year-title {
-      font-size: 24px;
+      font-size: 22px;
       font-weight: bold;
+      margin: 20px 0 10px;
       text-align: center;
-      margin-bottom: 20px;
-      color: #333;
     }
     .calendar {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 30px;
+      gap: 20px;
     }
     .month {
-      border: 1px solid #ccc;
+      border: 1px solid #ddd;
       padding: 10px;
       width: 280px;
+      background: #fff;
     }
     .month h2 {
       text-align: center;
       font-size: 16px;
-      margin: 5px 0;
+      margin: 0 0 10px;
     }
     table {
       width: 100%;
@@ -49,15 +49,18 @@
     }
     th, td {
       text-align: center;
-      padding: 6px 3px;
+      padding: 5px;
       border: 1px solid #eee;
       font-size: 12px;
     }
     td span {
       display: block;
       font-size: 10px;
-      color: #000;
+      color: #555;
       cursor: pointer;
+    }
+    td span:hover {
+      color: #e91e63;
     }
     .busy {
       color: red;
@@ -66,78 +69,79 @@
   </style>
 </head>
 <body>
-  <h1>对宝贝未来十年的安排 🗓️<br>抱抱日历 3.0</h1>
-  <div id="all-years"></div>
+  <h1>未来20年日历 🛏️</h1>
+  <div id="calendar-container"></div>
 
   <script>
-    const container = document.getElementById('all-years');
+    const container = document.getElementById("calendar-container");
     const months = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
     const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
     const getWeekday = (year, month, day) => new Date(year, month, day).getDay();
 
-    for (let year = 2025; year <= 2034; year++) {
-      const yearBlock = document.createElement('div');
-      yearBlock.className = 'year-block';
+    for (let year = 2025; year <= 2044; year++) {
+      const yearBlock = document.createElement("div");
+      yearBlock.className = "year-block";
 
-      const yearTitle = document.createElement('div');
-      yearTitle.className = 'year-title';
+      const yearTitle = document.createElement("div");
+      yearTitle.className = "year-title";
       yearTitle.textContent = `${year} 年`;
       yearBlock.appendChild(yearTitle);
 
-      const calendarEl = document.createElement('div');
-      calendarEl.className = 'calendar';
+      const calendarEl = document.createElement("div");
+      calendarEl.className = "calendar";
 
       for (let m = 0; m < 12; m++) {
         const days = daysInMonth(year, m);
         const firstDay = getWeekday(year, m, 1);
 
-        const monthDiv = document.createElement('div');
-        monthDiv.className = 'month';
+        const monthDiv = document.createElement("div");
+        monthDiv.className = "month";
 
-        const title = document.createElement('h2');
+        const title = document.createElement("h2");
         title.textContent = `${months[m]}`;
         monthDiv.appendChild(title);
 
-        const table = document.createElement('table');
-        const headerRow = document.createElement('tr');
-        ['日', '一', '二', '三', '四', '五', '六'].forEach(d => {
-          const th = document.createElement('th');
+        const table = document.createElement("table");
+        const headerRow = document.createElement("tr");
+        ["日", "一", "二", "三", "四", "五", "六"].forEach(d => {
+          const th = document.createElement("th");
           th.textContent = d;
           headerRow.appendChild(th);
         });
         table.appendChild(headerRow);
 
-        let row = document.createElement('tr');
+        let row = document.createElement("tr");
         for (let i = 0; i < firstDay; i++) {
-          const emptyCell = document.createElement('td');
+          const emptyCell = document.createElement("td");
           row.appendChild(emptyCell);
         }
 
         for (let d = 1; d <= days; d++) {
-          const cell = document.createElement('td');
-          const isBusy = year === 2028 && m === 7 && d === 1;
-          const span = document.createElement('span');
+          const cell = document.createElement("td");
+          const span = document.createElement("span");
 
-          if (isBusy) {
-            span.textContent = '没空';
-            span.className = 'busy';
-            span.addEventListener('click', () => {
-              alert('因为要见你 ❤️');
+          // 特别处理：2028年8月1日
+          const isSpecial = year === 2028 && m === 7 && d === 1;
+          if (isSpecial) {
+            span.textContent = "没空";
+            span.className = "busy";
+            span.addEventListener("click", () => {
+              alert("要亲亲 ");
             });
           } else {
-            span.textContent = '有空';
-            span.addEventListener('click', () => {
-              alert('给宝贝大大大大大抱抱');
+            span.textContent = "有空";
+            span.addEventListener("click", () => {
+              alert("一起睡觉 ");
             });
           }
 
-          cell.innerHTML = `${d}`;
+          cell.innerHTML = d;
           cell.appendChild(span);
           row.appendChild(cell);
 
           if ((firstDay + d - 1) % 7 === 6 || d === days) {
             table.appendChild(row);
-            row = document.createElement('tr');
+            row = document.createElement("tr");
           }
         }
 
